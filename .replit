@@ -1,4 +1,12 @@
 modules = ["python-3.12"]
+run = "run = \"python app.py\""
 
 [nix]
 channel = "stable-24_05"
+
+[[ports]]
+localPort = 8080
+externalPort = 80
+
+[deployment]
+run = ["sh", "-c", "run = \"python app.py\""]
