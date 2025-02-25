@@ -5,7 +5,7 @@ import os
 import base64
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/*": {"origins": "*", "methods": ["GET", "POST", "DELETE"]}})
 
 LOGO_DIR = os.path.join(os.getcwd(), 'logos')
 os.makedirs(LOGO_DIR, exist_ok=True)
