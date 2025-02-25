@@ -51,12 +51,18 @@ def save_company(company_id):
     logo_url = None
     if logo_data:
         try:
-            logo_bytes = base64.b64decode(logo_data.split(',')[1])
+            # Handle both data URL format and raw base64
+            if ',' in logo_data:
+                logo_bytes = base64.b64decode(logo_data.split(',')[1])
+            else:
+                logo_bytes = base64.b64decode(logo_data)
+                
             logo_path = os.path.join(LOGO_DIR, f"{company_id}.png")
             with open(logo_path, 'wb') as f:
                 f.write(logo_bytes)
             logo_url = f"/logos/{company_id}.png"
         except Exception as e:
+            print(f"Logo save error: {str(e)}")  # Log the error
             return jsonify({'error': f"Logo save failed: {str(e)}"}), 500
 
     # Update progress
@@ -100,4 +106,4 @@ def get_position(company_id):
     return jsonify({'position': position})
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=8080, debug=True)
